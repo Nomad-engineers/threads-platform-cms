@@ -16,7 +16,7 @@ const dirname = path.dirname(filename)
 export default buildConfig({
   cors: {
     origins: '*',
-    headers: ['Authorization', 'Content-Type'],
+    headers: ['Authorization', 'Content-Type', 'Code'],
   },
   admin: {
     user: Admins.slug,

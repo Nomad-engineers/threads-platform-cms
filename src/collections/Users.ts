@@ -49,7 +49,7 @@ export const Users: CollectionConfig = {
       handler: async ({ headers, query, payload }) => {
         console.log('/login')
         try {
-          const code = headers.get('code')
+          const code = headers.get('Code')
           const redirectUri = query.redirect_uri
 
           const clientId = process.env.THREADS_CLIENT_ID!
