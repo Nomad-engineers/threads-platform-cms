@@ -27,6 +27,9 @@ class Users {
     try {
       const code = headers.get('Code')
       const redirectUri = query.redirect_uri
+      if (!code || !redirectUri) {
+        return Response.json({ success: false, message: 'No code or redirectUri' }, { status: 400 })
+      }
 
       const clientId = process.env.THREADS_CLIENT_ID!
       const clientSecret = process.env.THREADS_CLIENT_SECRET!
