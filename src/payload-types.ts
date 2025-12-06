@@ -141,6 +141,7 @@ export interface Admin {
  */
 export interface User {
   id: number;
+  threadsId: string;
   username: string;
   name?: string | null;
   picUrl?: string | null;
@@ -267,6 +268,7 @@ export interface AdminsSelect<T extends boolean = true> {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  threadsId?: T;
   username?: T;
   name?: T;
   picUrl?: T;

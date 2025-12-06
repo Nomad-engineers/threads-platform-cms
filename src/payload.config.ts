@@ -23,6 +23,11 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    autoRefresh: true,
+    autoLogin: {
+      email: 'admin@admin.com',
+      password: 'admin123',
+    },
   },
   collections: [Admins, Users, Media],
   editor: lexicalEditor(),

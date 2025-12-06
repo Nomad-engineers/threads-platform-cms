@@ -14,6 +14,11 @@ export const Users: CollectionConfig = {
   },
   fields: [
     {
+      name: 'threadsId',
+      type: 'text',
+      required: true,
+    },
+    {
       name: 'username',
       type: 'text',
       required: true,
