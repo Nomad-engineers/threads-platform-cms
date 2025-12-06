@@ -1,7 +1,7 @@
 import { User } from '@/payload-types'
 import { Endpoint, PayloadRequest } from 'payload'
 
-class Endpoints {
+class Users {
   get routes(): Omit<Endpoint, 'root'>[] {
     return [
       {
@@ -42,7 +42,10 @@ class Endpoints {
           code: code,
         }),
       })
-      if (!shortToken.ok) return Response.json({ success: false }, { status: 400 })
+
+      if (!shortToken.ok) {
+        return Response.json({ success: false, data: await shortToken.json() }, { status: 400 })
+      }
 
       const { access_token: shortAccessToken } = await shortToken.json()
 
@@ -54,7 +57,9 @@ class Endpoints {
         },
       )
 
-      if (!longToken.ok) return Response.json({ success: false }, { status: 400 })
+      if (!longToken.ok) {
+        return Response.json({ success: false, data: await longToken.json() }, { status: 400 })
+      }
       const { access_token: longAccessToken } = await longToken.json()
 
       const getMe = await fetch(
@@ -92,8 +97,8 @@ class Endpoints {
       })
 
       return Response.json({ success: true, accessToken: longAccessToken, user })
-    } catch (e) {
-      return Response.json({ success: false }, { status: 500 })
+    } catch (error) {
+      return Response.json({ success: false, error }, { status: 500 })
     }
   }
 
@@ -153,4 +158,4 @@ class Endpoints {
   }
 }
 
-export const UsersEndpoints = new Endpoints()
+export const UsersEndpoints = new Users()
