@@ -17,6 +17,8 @@ export const Users: CollectionConfig = {
       name: 'threadsId',
       type: 'text',
       required: true,
+      unique: true,
+      index: true,
     },
     {
       name: 'username',

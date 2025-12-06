@@ -70,19 +70,27 @@ class Users {
       )
 
       if (!getMe.ok) return Response.json({ success: false }, { status: 400 })
-      const { id, username, name, threads_profile_picture_url, threads_biography, is_verified } =
-        await getMe.json()
+      const {
+        id: threadsId,
+        username,
+        name,
+        threads_profile_picture_url,
+        threads_biography,
+        is_verified,
+      } = await getMe.json()
 
-      let user: User = await payload.findByID({
-        collection: 'users',
-        id,
-      })
+      let user: User = (
+        await payload.find({
+          collection: 'users',
+          where: { threadsId: { equals: threadsId } },
+        })
+      ).docs.first
 
       if (!user) {
         user = await payload.create({
           collection: 'users',
           data: {
-            id,
+            threadsId,
             username,
             name,
             picUrl: threads_profile_picture_url,
@@ -94,7 +102,7 @@ class Users {
 
       user = await payload.update({
         collection: 'users',
-        id,
+        id: user.id,
         data: { token: longAccessToken },
       })
 
@@ -121,21 +129,29 @@ class Users {
       const getMe = await fetch(`https://graph.threads.net/v1.0/me?${queryString}`)
 
       if (!getMe.ok) return Response.json({ success: false }, { status: 400 })
-      const { id, username, name, threads_profile_picture_url, threads_biography, is_verified } =
-        await getMe.json()
+      const {
+        id: threadsId,
+        username,
+        name,
+        threads_profile_picture_url,
+        threads_biography,
+        is_verified,
+      } = await getMe.json()
 
-      let user: User = await payload.findByID({
-        collection: 'users',
-        id,
-      })
+      let user: User = (
+        await payload.find({
+          collection: 'users',
+          where: { threadsId: { equals: threadsId } },
+        })
+      ).docs.first
 
       if (!user) return Response.json({ success: false }, { status: 404 })
 
       user = await payload.update({
         collection: 'users',
-        id,
+        id: user.id,
         data: {
-          id,
+          threadsId,
           username,
           name,
           bio: threads_biography,
