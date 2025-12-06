@@ -73,12 +73,10 @@ class Users {
       const { id, username, name, threads_profile_picture_url, threads_biography, is_verified } =
         await getMe.json()
 
-      let user: User = (
-        await payload.find({
-          collection: 'users',
-          where: { username },
-        })
-      ).docs[0]
+      let user: User = await payload.findByID({
+        collection: 'users',
+        id,
+      })
 
       if (!user) {
         user = await payload.create({
@@ -96,7 +94,7 @@ class Users {
 
       user = await payload.update({
         collection: 'users',
-        id: user.id,
+        id,
         data: { token: longAccessToken },
       })
 
