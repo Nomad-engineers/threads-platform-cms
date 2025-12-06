@@ -109,13 +109,56 @@ export const Users: CollectionConfig = {
             })
           }
 
-          await payload.update({
+          user = await payload.update({
             collection: 'users',
             id: user.id,
             data: { token: longAccessToken },
           })
 
           return Response.json({ success: true, accessToken: longAccessToken, user })
+        } catch (e) {
+          return Response.json({ success: false }, { status: 500 })
+        }
+      },
+    },
+    {
+      path: '/me',
+      method: 'get',
+      handler: async ({ headers, payload }) => {
+        console.log('/me')
+        try {
+          const accessToken = headers.get('Authorization')?.split(' ')[1]
+
+          const getMe = await fetch(
+            `https://graph.threads.net/v1.0/me?fields=id,username,name,threads_profile_picture_url,threads_biography,is_verified&access_token=${accessToken}`,
+          )
+
+          if (!getMe.ok) return Response.json({ success: false }, { status: 400 })
+          const { username, name, threads_profile_picture_url, threads_biography, is_verified } =
+            await getMe.json()
+
+          let user: User = (
+            await payload.find({
+              collection: 'users',
+              where: { username },
+            })
+          ).docs[0]
+
+          if (!user) return Response.json({ success: false }, { status: 404 })
+
+          user = await payload.update({
+            collection: 'users',
+            id: user.id,
+            data: {
+              username,
+              name,
+              bio: threads_biography,
+              picUrl: threads_profile_picture_url,
+              isVerified: is_verified,
+            },
+          })
+
+          return Response.json({ success: true, user })
         } catch (e) {
           return Response.json({ success: false }, { status: 500 })
         }
