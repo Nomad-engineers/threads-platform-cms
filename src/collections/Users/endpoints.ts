@@ -75,14 +75,14 @@ class Users {
 
       let user: User = await payload.findByID({
         collection: 'users',
-        id,
+        id: +id,
       })
 
       if (!user) {
         user = await payload.create({
           collection: 'users',
           data: {
-            id,
+            id: +id,
             username,
             name,
             picUrl: threads_profile_picture_url,
@@ -94,7 +94,7 @@ class Users {
 
       user = await payload.update({
         collection: 'users',
-        id,
+        id: +id,
         data: { token: longAccessToken },
       })
 
@@ -126,16 +126,16 @@ class Users {
 
       let user: User = await payload.findByID({
         collection: 'users',
-        id,
+        id: +id,
       })
 
       if (!user) return Response.json({ success: false }, { status: 404 })
 
       user = await payload.update({
         collection: 'users',
-        id,
+        id: +id,
         data: {
-          id,
+          id: +id,
           username,
           name,
           bio: threads_biography,
