@@ -79,6 +79,7 @@ class Users {
         is_verified,
       } = await getMe.json()
 
+      console.log(threadsId, username)
       let user: User = (
         await payload.find({
           collection: 'users',
