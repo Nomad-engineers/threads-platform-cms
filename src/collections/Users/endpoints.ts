@@ -79,13 +79,13 @@ class Users {
         is_verified,
       } = await getMe.json()
 
-      console.log(threadsId, username)
+      console.log('userLog', threadsId, username)
       let user: User = (
         await payload.find({
           collection: 'users',
           where: { threadsId: { equals: threadsId } },
         })
-      ).docs.first
+      ).docs[0]
 
       if (!user) {
         user = await payload.create({
