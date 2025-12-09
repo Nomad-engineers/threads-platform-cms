@@ -11,6 +11,7 @@ export interface ThreadsPosts {
   owner: ThreadsPostsOwner
   username: string
   text: string
+  topic_tag: string
   timestamp: string
   shortcode: string
   is_quote_post: boolean
